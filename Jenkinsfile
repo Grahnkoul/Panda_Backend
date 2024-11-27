@@ -59,7 +59,7 @@ pipeline
             }
         }   
         
-        stage('Push_Image_Artifactory') 
+        stage('Push_Image_Dockerhub') 
         {
             steps 
             {
@@ -84,7 +84,9 @@ pipeline
             junit testResults: "test-results/*.xml"
             cleanWs()
         }
+        success 
+        {
+            build job: 'app_of_apps', parameters: [ string(name: 'backendDockerTag', value: "$dockerTag")], wait: false
+        }
     }
-    
-
 }
